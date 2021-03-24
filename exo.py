@@ -87,6 +87,24 @@ def gou2(fqdn):
                 })
     return jsonify(DSN)
 
-@app.route("/api/be/{be}")
+@app.route("/api/be/<be>", methods=['GET'])
 def gou3(be):
-    response = []
+    number_of_domain = 0
+    response = {
+        "pays" : [],
+        "departement" : [],
+        "ville" : [],
+        "nom" : [],
+        "number_of_domain" : []
+    }
+    with open("202102_OPENDATA_A-NomsDeDomaineEnPointFr.csv", encoding="latin1") as data:
+        reader = csv.DictReader(data, delimiter=";")
+        for i, row in enumerate(reader):
+            if row["Nom BE"] == be:
+                response['pays'] = (row['Pays BE']),
+                response['departement'] = (row['Departement BE']),
+                response['ville'] = (row['Ville BE']),
+                response['nom'] = (row['Nom BE']),
+                response['number_of_domain'] = number_of_domain,
+                number_of_domain += 1
+        return jsonify(response)
